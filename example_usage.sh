@@ -1,0 +1,3 @@
+#!/bin/bash
+python3 score2tracker.py --i examples/Goldberg_Variations.musicxml --sel '(P1,1),(P1,2)' --txt mod_log.txt  --o examples/Goldberg_Variations.mod
+#python3 score2tracker.py --i examples/Goldberg_Variations.musicxml --sel '(P1,1),(P1,2),(P1,1),(P1,2)' --txt mod_log.txt --s 'st-xx/Steinway.wav','st-xx/Steinway.wav','st-xx/EPiano.wav','st-xx/NightMare.wav' --spc 1,1,1,1  --o examples/Goldberg_Variations.mod
