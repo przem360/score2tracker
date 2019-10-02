@@ -20,7 +20,7 @@ You can find example of conversion settings inside of example_usage.sh file.
 S2T is pure Python 3 script so all you need to get it to work is P3.
 
 ```sh
-$ python3 score2tracker.py --i file.musicxml ---sel '(P1,1),(P1,2)' --o file.mod
+$ python3 score2tracker.py --i file.musicxml --sel '(P1,1),(P1,2)' --o file.mod
 ```
 
 `--sel` option is important. It's a list of parts and staff for each channel. So staff that should go to first channel is specified in first bracket and so on. First position is part id specified in MusicXML and second is staff number in that part. IE, if part 1 is violin and part 2 is piano - you can assign first staff in part one (P1,1) to channel one, first staff in part 2 to channel 2 and second staff in part 2 to channel 3 like so: `(P1,1),(P2,1),(P2,2)` - fourth channel will be empty.
