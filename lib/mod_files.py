@@ -49,7 +49,7 @@ class FileOperator:
         'c1':856,'c#1': 808,'d1': 762,'d#1': 720,'e1': 678,'f1':640,'f#1': 604,'g1':570,'g#1':538,'a1':508,'a#1':480,'b1':453,'h1':453,
         'c2':428,'c#2': 404,'d2': 381,'d#2': 360,'e2': 339,'f2':320,'f#2': 302,'g2':285,'g#2':269,'a2':254,'a#2':240,'b2':226,'h2':226,
         'c3':214,'c#3': 202,'d3': 190,'d#3': 180,'e3': 170,'f3':160,'f#3': 151,'g3':143,'g#3':135,'a3':127,'a#3':120,'b3':113,'h3':113,
-        'c4':107,'c#4': 101,'d4': 95,'d#4': 90,'e4': 85,'f4':80,'f#4': 75,'g4':71,'g#4':67,'a4':63,'a#4':60,'b4':56,'h4':56
+        'c4':107,'c#4': 101,'d4': 95,'d#4': 90,'e4': 85,'f4':80,'f#4': 75,'g4':71,'g#4':67,'a4':63,'a#4':60,'b4':56,'h4':56,'b#3':107
         }
         swapped_hex = {
         '01':b'\x10','02':b'\x20','03':b'\x30','04':b'\x40','05':b'\x50','06':b'\x60','07':b'\x70','08':b'\x80','09':b'\x90','10':b'\xA0','11':b'\xB0','12':b'\xC0','13':b'\xD0',
@@ -60,7 +60,7 @@ class FileOperator:
             new_lines = lines.rsplit('\n',int(to_cut_out))
             lines = new_lines[0]
         with open(fname,'wb') as mod_file:
-            title_len = len(title);
+            title_len = len(title)
             if (title_len>20):
                 title = title[0:20]
             mod_file.write(title.encode('utf8'))
@@ -68,7 +68,7 @@ class FileOperator:
                 mod_file.write(b'\x00')
                 title_len +=1
             for sample_data in self.selected_samples:
-                if (sample_data is not ''):
+                if (sample_data != ''):
                     sample_file = sample_data
                     duration = self.get_stereo_duration(str(sample_file))
                     sd = sample_data
@@ -125,24 +125,26 @@ class FileOperator:
                         note_octave = event[2]
                         instr_id = str(''.join(event[4:6]))
                         instr_byte = swapped_hex[instr_id]
-                        if ((note_octave is not None) and (note_octave is not '-')):
+                        if ((note_octave != None) and (note_octave != '-')):
                             if int(note_octave) > 4:
                                 note_octave = str('4')
                             else:
                                 note_octave = str(note_octave)
-                        if ((note_name is not '-')and(note_sign is not '-')):
+                        if ((note_name != '-')and(note_sign != '-')):
                             note_name = ''.join([note_name, note_sign])
-                        if ((note_name is not None) and (note_name is not '-') and (note_octave is not '-')):
+                        if ((note_name != None) and (note_name != '-') and (note_octave != '-')):
                             note_name = ''.join([note_name, note_octave])
-                            current_period = periods[note_name]
-                        if note_name == '-': current_period = 0;
+                            if note_name in periods:
+                                current_period = periods[note_name]
+                            else: print('WARNING >> note: '+str(note_name)+' is ommited.')
+                        if note_name == '-': current_period = 0
                         current_byte = current_period.to_bytes(2, byteorder='big', signed=True)
                         mod_file.write(current_byte)
                         mod_file.write(instr_byte)
                         mod_file.write(b'\x00')
             # add wave files
             for sample_data in self.selected_samples:
-                if (sample_data is not ''):
+                if (sample_data != ''):
                     sample_file = 'samples/'+sample_data
                     #with open(sample_file, "rb") as wave_file:
                     wr = wave.open(sample_file,'r')

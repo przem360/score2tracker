@@ -52,6 +52,8 @@ mod_visualisation = []
 pt_lenght = 64
 sample_folder = 'samples/'
 score_selection_format = re.compile('^((\([Pp][0-9]+\,[0-9]+\)),?){1,4}$')
+the_file = ''
+mod_file_path = ''
 def clear():
     if name == 'nt':
         _ = system('cls')
@@ -91,7 +93,7 @@ def channel_selection(channels_counter):
             if curr_ch_selection == psline[0]:
                 staffs_in_part.append(str(psline[1]))
         curr_st_selection = input('Type STAFF id fo channel '+str(i+1)+'... ')
-        while curr_st_selection not in staffs_in_part:
+        while (curr_st_selection !='skip') and (curr_st_selection not in staffs_in_part):
             curr_st_selection = input('Sorry, but this staff id is not present in selected part.\nType STAFF id for channel '+str(i+1)+', of part '+str(curr_ch_selection)+'... ')
         selected_channels.append([curr_ch_selection,curr_st_selection])
         i = i+1
@@ -111,6 +113,7 @@ if args.spc: sample_per_channel = args.spc
 if args.sel: com_selected_channels = args.sel
 if args.o: mod_file_path = args.o
 
+# txt_file_path = 'log.txt'
 
 if (the_file == '')or(the_file is None):
     get_file = input('Type MusicXML filename or path... ')
@@ -119,7 +122,7 @@ if (the_file == '')or(the_file is None):
 else:
     the_file = Path(the_file)
 transcribed = ScoreTranscriber(the_file)
-if (title is not None)and(title is not ''):
+if (title != None)and(title != ''):
     title = transcribed.get_score_title().replace(' ', '_')
 if (title is None)or(title==''):
     title = 'score2tracker'
@@ -216,7 +219,7 @@ def draw_mod(pattern_pack):
         t_i+=1
     t_i = 0
     clear()
-    if line is not '':
+    if line != '':
         print(line)
     return line
 lines = ''
